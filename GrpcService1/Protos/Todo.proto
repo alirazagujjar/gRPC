@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcService1";
+import "google/Api/annotations.proto";
+package todoit;
+
+service ToDoIt {
+    // Create 
+    rpc CreateToDo(CreateTodoRequest) returns (CreateTodoResponse) {
+        option (google.api.http) = {
+            post: "/v1/AddTodo",
+            body: "*"
+        };
+    }
+
+    // Get single
+    rpc ReadToDo(ReadTodoRequest) returns (ReadTodoResponse) {
+        option (google.api.http) = {
+            get: "/v1/GetById/{id}"
+        };
+    }
+
+    // Update
+    rpc UpdateToDo(UpdateTodoRequest) returns (UpdateTodoResponse) {
+        option (google.api.http) = {
+            put: "/v1/UpdateTodo",
+            body: "*"
+        };
+    }
+
+    // GetAll
+    rpc ListToDo(GetAllTodoRequest) returns (GetAllTodoResponse) {
+        option (google.api.http) = {
+            get: "/v1/GetAllTodoList"
+        };
+    }
+
+    // Delete
+    rpc DeleteToDo(DeleteTodoRequest) returns (DeleteTodoResponse) {
+        option (google.api.http) = {
+            delete: "/v1/DeleteById/{id}"
+        };
+    }
+}
+
+message CreateTodoRequest {
+    string title = 1;
+    string description = 2;
+}
+
+message CreateTodoResponse {
+    int32 id = 1;
+}
+
+message ReadTodoRequest {
+    int32 id = 1;
+}
+
+message ReadTodoResponse {
+    int32 id = 1;
+    string title = 2;
+    string description = 3;
+    string todo_status = 4;  // changed to camelCase
+}
+
+message GetAllTodoRequest {}
+
+message GetAllTodoResponse {
+    repeated ReadTodoResponse todo = 1;  // changed field name to match camelCase convention
+}
+
+message UpdateTodoRequest {
+    int32 id = 1;
+    string title = 2;
+    string description = 3;
+    string todo_status = 4;  // changed to camelCase
+}
+
+message UpdateTodoResponse {
+    int32 id = 1;
+}
+
+message DeleteTodoRequest {
+    int32 id = 1;
+}
+
+message DeleteTodoResponse {
+    int32 id = 1;
+}
